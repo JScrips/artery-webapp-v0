@@ -1,0 +1,6 @@
+{
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "html.format.indentInnerHtml": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
