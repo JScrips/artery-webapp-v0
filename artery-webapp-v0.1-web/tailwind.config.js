@@ -11,6 +11,9 @@ module.exports = {
                 'hero-content-3': "url('IMGS/Homepage/hero-content-3.jpg')",
                 'hero-content-4': "url('IMGS/Homepage/hero-content-4.jpg')",
             },
+            fontFamily: {
+                satisfy: ['Satisfy', 'cursive'],
+            },
         },
     },
     plugins: [],
