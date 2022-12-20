@@ -1,10 +1,21 @@
-import { RiHeartPulseFill } from 'react-icons/ri'
 import { AiOutlineSearch } from 'react-icons/ai'
+import { BsFillMoonFill, BsSunFill } from 'react-icons/bs'
+import { useState } from 'react'
+import { AuthFunctions } from '../../AuthContext/AuthContext'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+    //Variables
+    const [darkMode, setDarkMode] = useState(false)
+    const { user } = AuthFunctions()
+
+    // this darkMode variable will be used to toggle different dynamic elements within the Navbar depending on whether or not dark mode is enabled.
+
+    //Styling
     const styles = {
+        container: 'pt-10 pb-40 justify-center  flex',
         navStyles:
-            'flex justify-around items-center bg-teal-500 text-white p-1',
+            'border border-white border-2 flex rounded-full justify-around items-center text-white p-4 dark:text-gray-200 w-10/12',
         navLogo: 'text-2xl',
         navLinksLayout: 'flex gap-10 text-lg',
         navLoginButton:
@@ -13,32 +24,51 @@ const Navbar = () => {
             'p-1 opacity-70 focus-within:opacity-100 px-3 rounded-xl border border-2 border-white flex bg-white items-center text-black focus-within:border focus-within:border-1 focus-within:border-black ',
         magnifyingGlass: 'text-xl text-black text-opacity-50 mr-2 ',
         inputStyle: 'focus:outline-none',
+        darkModeStyle: 'text-white text-xl',
+        lightModeStyle: 'text-yellow-500 text-xl',
+    }
+
+    //Methods
+
+    //This method is used to toggle dark mode, and set the darkMode state to the opposite boolean. TailwindCSS utilizes class atrributes to apply darkmode, so this method simply adds the dark class to the root document element.
+    const toggleDark = () => {
+        document.documentElement.classList.toggle('dark')
+        setDarkMode(!darkMode)
     }
 
     return (
-        <nav className={styles.navStyles}>
-            <div>
-                <RiHeartPulseFill className={styles.navLogo} />
-            </div>
-            <ul className={styles.navLinksLayout}>
-                <li>
-                    <a> Home </a>
-                </li>
-                <li>
-                    <a> Profile </a>
-                </li>
-            </ul>
-            <div className={styles.searchInput}>
-                <AiOutlineSearch className={styles.magnifyingGlass} />
-                <input
-                    className={styles.inputStyle}
-                    placeholder="Search Artery"
-                />
-            </div>
-
-            <button className={styles.navLinksLayout}> Sign Up / In </button>
-            <div className={styles.navLoginButton}> Submit Art</div>
-        </nav>
+        <div className={styles.container}>
+            <nav className={styles.navStyles}>
+                <ul className={styles.navLinksLayout}></ul>
+                <div className={styles.searchInput}>
+                    <AiOutlineSearch className={styles.magnifyingGlass} />
+                    <input
+                        className={styles.inputStyle}
+                        placeholder="Search Artery"
+                    />
+                </div>
+                <div>
+                    {user && user.email ? (
+                        user.email
+                    ) : (
+                        <Link to="/login">
+                            <button className={styles.navLinksLayout}>
+                                Log In
+                            </button>
+                        </Link>
+                    )}
+                </div>
+                <div className={styles.navLoginButton}> Submit Art</div>
+                <button onClick={() => toggleDark()}>
+                    {' '}
+                    {darkMode ? (
+                        <BsSunFill className={styles.lightModeStyle} />
+                    ) : (
+                        <BsFillMoonFill className={styles.darkModeStyle} />
+                    )}{' '}
+                </button>
+            </nav>
+        </div>
     )
 }
 
