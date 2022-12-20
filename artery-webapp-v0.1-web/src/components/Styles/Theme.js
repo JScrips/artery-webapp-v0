@@ -6,7 +6,7 @@ const Theme = ({ children }) => {
         mainStyle: 'min-h-screen',
     }
     return (
-        <div>
+        <div className="bg-teal-500 dark:bg-neutral-900">
             <Navbar />
             <main className={styles.mainStyle}> {children} </main>
             <Footer />
