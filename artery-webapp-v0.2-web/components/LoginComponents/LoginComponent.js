@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { AuthFunctions } from "../../Auth/AuthContext";
 import { useRouter } from "next/router";
+import { Satisfy } from "@next/font/google";
+
+const satisfy = Satisfy({
+  weight: "400",
+});
 
 const LoginComponent = ({ setShowLogin }) => {
   const [email, setEmail] = useState("");
@@ -23,9 +28,12 @@ const LoginComponent = ({ setShowLogin }) => {
     button: " px-4 py-1 bg-blue-600 rounded-lg text-white p-2 mt-4",
     bottomMsg: "flex items-center mt-6 gap-2",
   };
+
   return (
     <main className={styles.container}>
-      <div className={styles.title}> Login Page</div>
+      <div className={satisfy.className}>
+        <div className={styles.title}> Login Page</div>
+      </div>
       <input
         className={styles.topInput}
         placeholder="Email"

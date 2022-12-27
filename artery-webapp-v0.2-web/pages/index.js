@@ -1,15 +1,16 @@
 import HeroBanner from "../components/WelcomePageComponents/HeroBanner";
+import { Satisfy } from "@next/font/google";
 
-// import { Satisfy } from "@next/font/google";
-
-// const satisfy = Satisfy({
-//   weight: "400",
-//   subsets: ["latin"],
-//   variable: "--font-satisfy",
-// });
+const satisfy = Satisfy({
+  weight: "400",
+});
 
 const Home = () => {
-  return <HeroBanner />;
+  return (
+    <div className={satisfy.className}>
+      <HeroBanner />
+    </div>
+  );
 };
 
 export default Home;

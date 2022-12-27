@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const HeroBanner = () => {
   //  STYLING OBJECT
   const styles = {
@@ -26,7 +28,10 @@ const HeroBanner = () => {
         <h3 className={styles.heroText}> ARTERY. We put the ART in HEART </h3>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.button}> Enter </button>
+        <button className={styles.button}>
+          {" "}
+          <Link href="/gallery">Enter</Link>{" "}
+        </button>
       </div>
     </div>
   );

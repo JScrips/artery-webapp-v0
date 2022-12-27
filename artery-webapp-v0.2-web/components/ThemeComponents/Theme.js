@@ -5,7 +5,7 @@ import BG from "../../public/backgroundPattern.jpg";
 
 const Theme = ({ children }) => {
   const styles = {
-    mainStyle: "min-h-screen",
+    mainStyle: "min-h-screen p-20",
     container: "bg-green-800 dark:bg-neutral-900 p-10 relative",
     appContainer:
       "rounded-3xl bg-opacity-70 border  bg-neutral-900 border-white border-opacity-50 relative",

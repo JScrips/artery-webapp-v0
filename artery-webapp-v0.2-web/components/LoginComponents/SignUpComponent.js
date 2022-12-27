@@ -3,20 +3,25 @@ import { AuthFunctions } from "../../Auth/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useRouter } from "next/router";
+import { Satisfy } from "@next/font/google";
+import { updateProfile } from "firebase/auth";
+
+const satisfy = Satisfy({
+  weight: "400",
+});
 
 const SignUpComponent = ({ setShowLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [artist, setArtist] = useState(false);
-  const { createUser } = AuthFunctions();
+  const { createUser, user } = AuthFunctions();
   const router = useRouter();
-  const { user } = AuthFunctions();
 
   //This handleSignUp function is called when the user clicks the sign up button. It calls the createUser function from AuthContext, and then sets the user's display name, email, and password in the database under the "users" collection. It then pushes the user to the home page.
   const handleSignUp = async (e, email, password, artist, displayName) => {
     e.preventDefault();
-    await createUser(email, password);
+    const createdUser = await createUser(email, password);
     // adding a user document to the user's collection in the database.
     try {
       await setDoc(doc(db, "users", displayName), {
@@ -26,15 +31,21 @@ const SignUpComponent = ({ setShowLogin }) => {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-    // update the user object with personalization. and push to the user's page.
-    if (user !== null) {
-      user.displayName = displayName;
-      router.push(`/users/${user.displayName}`);
-    }
+    // updating the user's profile with their display name. Then push the user to their profile page.
+    await updateProfile(createdUser.user, {
+      displayName: displayName,
+    })
+      .then(() => {
+        console.log("updated profile");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    router.push(`/users/${createdUser.user.displayName}`);
   };
 
   const styles = {
-    conatiner: "flex flex-col items-center rounded-t-xl ",
+    container: "flex flex-col items-center rounded-t-xl justify-center",
     title: " p-2 text-center font-satisfy text-teal-500 text-4xl",
     topInput: "border p-2 focus:outline-none mt-2 ",
     midInput: "border p-2 focus:outline-none mt-2 mb-2",
@@ -46,7 +57,10 @@ const SignUpComponent = ({ setShowLogin }) => {
 
   return (
     <main className={styles.container}>
-      <div className={styles.title}> Sign Up Page</div>
+      <div className={satisfy.className}>
+        <div className={styles.title}>Sign Up Page</div>
+      </div>
+
       <input
         className={styles.topInput}
         placeholder="Display Name"

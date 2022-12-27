@@ -4,6 +4,11 @@ import { useState } from "react";
 import { AuthFunctions } from "../../Auth/AuthContext";
 import SignOutButton from "../LoginComponents/SignOutButton";
 import Link from "next/link";
+import { Satisfy } from "@next/font/google";
+
+const satisfy = Satisfy({
+  weight: "400",
+});
 
 const Navbar = () => {
   //Variables
@@ -14,7 +19,7 @@ const Navbar = () => {
 
   //Styling
   const styles = {
-    container: "flex  justify-around items-center gap-6",
+    container: "flex  justify-around items-center gap-6 mt-6",
     navStyles: "flex  gap-10  text-white p-4 dark:text-gray-200",
     navLogo: "text-2xl",
     navLinksLayout: "flex gap-10 text-lg",
@@ -38,6 +43,12 @@ const Navbar = () => {
 
   return (
     <div className={styles.container}>
+      <div className={satisfy.className}>
+        <div className="text-6xl text-teal-500">
+          <Link href="/">ARTERY</Link>{" "}
+        </div>
+      </div>
+
       <nav className={styles.navStyles}>
         <ul className={styles.navLinksLayout}></ul>
         <div className={styles.searchInput}>
@@ -46,8 +57,8 @@ const Navbar = () => {
         </div>
         <div>
           {user && user.email ? (
-            <Link href={`/`}>
-              <button>{user.email}</button>
+            <Link href={`/users/${user.displayName}`}>
+              <button>{user.displayName}</button>
             </Link>
           ) : (
             <p className={styles.navLinksLayout}>Guest </p>
@@ -76,6 +87,8 @@ const Navbar = () => {
           </button>
         )}
       </nav>
+
+      <div> </div>
     </div>
   );
 };
