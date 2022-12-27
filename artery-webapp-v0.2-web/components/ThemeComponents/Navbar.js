@@ -14,8 +14,8 @@ const Navbar = () => {
 
   //Styling
   const styles = {
-    container: "flex",
-    navStyles: "flex flex-col gap-10  text-white p-4 dark:text-gray-200",
+    container: "flex  justify-around items-center gap-6",
+    navStyles: "flex  gap-10  text-white p-4 dark:text-gray-200",
     navLogo: "text-2xl",
     navLinksLayout: "flex gap-10 text-lg",
     navLoginButton:
@@ -46,12 +46,19 @@ const Navbar = () => {
         </div>
         <div>
           {user && user.email ? (
-            user.email
+            <Link href={`/`}>
+              <button>{user.email}</button>
+            </Link>
           ) : (
-            <button className={styles.navLinksLayout}>Guest </button>
+            <p className={styles.navLinksLayout}>Guest </p>
           )}
         </div>
-        <div className={styles.navLoginButton}> Submit Art</div>
+        {user && user.email ? (
+          <div className={styles.navLoginButton}> Submit Art</div>
+        ) : (
+          ""
+        )}
+
         <button onClick={() => toggleDark()}>
           {" "}
           {darkMode ? (

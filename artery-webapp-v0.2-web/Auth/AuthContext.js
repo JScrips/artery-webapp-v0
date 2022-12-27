@@ -19,9 +19,7 @@ export const AuthContextProvider = ({ children }) => {
     const userStatus = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (user !== null && user.email !== undefined) {
-        console.log(`Welcome ${user.email}`);
       } else {
-        console.log("No one is logged in.");
       }
     });
 

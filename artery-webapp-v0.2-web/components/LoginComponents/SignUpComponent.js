@@ -1,42 +1,89 @@
 import { useState } from "react";
 import { AuthFunctions } from "../../Auth/AuthContext";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
+import { useRouter } from "next/router";
 
 const SignUpComponent = ({ setShowLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [artist, setArtist] = useState(false);
   const { createUser } = AuthFunctions();
+  const router = useRouter();
+  const { user } = AuthFunctions();
 
-  const handleLogin = (e, email, password) => {
+  //This handleSignUp function is called when the user clicks the sign up button. It calls the createUser function from AuthContext, and then sets the user's display name, email, and password in the database under the "users" collection. It then pushes the user to the home page.
+  const handleSignUp = async (e, email, password, artist, displayName) => {
     e.preventDefault();
-    createUser(email, password);
+    await createUser(email, password);
+    // adding a user document to the user's collection in the database.
+    try {
+      await setDoc(doc(db, "users", displayName), {
+        artist: artist,
+        displayName: displayName,
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+    // update the user object with personalization. and push to the user's page.
+    if (user !== null) {
+      user.displayName = displayName;
+      router.push(`/users/${user.displayName}`);
+    }
+  };
+
+  const styles = {
+    conatiner: "flex flex-col items-center rounded-t-xl ",
+    title: " p-2 text-center font-satisfy text-teal-500 text-4xl",
+    topInput: "border p-2 focus:outline-none mt-2 ",
+    midInput: "border p-2 focus:outline-none mt-2 mb-2",
+    bottomInput: "border p-2   focus:outline-none",
+    artisSect: "flex gap-2",
+    button: " px-4 py-1 bg-blue-600 rounded-lg text-white p-2 mt-4",
+    bottomMsg: "flex items-center mt-6 gap-2",
   };
 
   return (
-    <main className="flex flex-col items-center rounded-t-xl ">
-      <div className=" p-2 text-center font-satisfy text-teal-500 text-4xl">
-        {" "}
-        Sign Up Page
-      </div>
+    <main className={styles.container}>
+      <div className={styles.title}> Sign Up Page</div>
       <input
-        className="border p-2 focus:outline-none mt-2 mb-2"
+        className={styles.topInput}
+        placeholder="Display Name"
+        type={"text"}
+        onChange={(e) => setDisplayName(e.target.value)}
+      />
+      <input
+        className={styles.midInput}
         placeholder="Email"
+        type={"email"}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
-        className="border p-2   focus:outline-none"
+        className={styles.bottomInput}
         placeholder="Password"
+        type={"password"}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <div className={styles.artisSect}>
+        <label> Are you an Artist? </label>
+        <input
+          type="checkbox"
+          onChange={() => {
+            setArtist((prevState) => !prevState);
+          }}
+        />
+      </div>
       <button
         onClick={(e) => {
-          handleLogin(e, email, password);
+          handleSignUp(e, email, password, artist, displayName);
         }}
-        className=" px-4 py-1 bg-blue-600 rounded-lg text-white p-2 mt-4"
+        className={styles.button}
       >
         {" "}
         Sign up{" "}
       </button>
-      <div className="flex items-center mt-6 gap-2">
+      <div className={styles.bottomMsg}>
         <span> Already have an account?</span>{" "}
         <button
           onClick={() => {
